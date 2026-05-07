@@ -14,40 +14,40 @@ spring:
 
       routes:
         - id: auth-service
-          uri: lb://auth-service
+          uri: http://localhost:8082
           predicates:
             - Path=/auth/**
           filters:
             - StripPrefix=1
 
         - id: user-service
-          uri: lb://user-service
+          uri: http://localhost:8083
           predicates:
             - Path=/users/**
           filters:
             - StripPrefix=1
 
         - id: transaction-service
-          uri: lb://transaction-service
+          uri: http://localhost:8085
           predicates:
             - Path=/transactions/**
           filters:
             - StripPrefix=1
 
         - id: wallet-service
-          uri: lb://wallet-service
+          uri: http://localhost:8084
           predicates:
             - Path=/wallet/**
           filters:
             - StripPrefix=1
 
   jwt:
-    secret: mySecretKey1234567890123456789012345678901234567890
+    secret: "your_super_secret_jwt_key_that_is_at_least_256_bits_long_for_HS256_algorithm"
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka
 
 management:
   endpoints:

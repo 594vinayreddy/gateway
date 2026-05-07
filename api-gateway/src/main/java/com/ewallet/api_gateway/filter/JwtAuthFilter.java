@@ -28,6 +28,9 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
+        System.out.println("Filter triggered for path: " +
+                exchange.getRequest().getURI().getPath());
+
         String path = exchange.getRequest().getURI().getPath();
 
         if (PUBLIC_PATHS.stream().anyMatch(path::startsWith)) {
@@ -39,6 +42,8 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            System.out.println("Missing or invalid Authorization header");
+            System.out.println("Auth Header: " + authHeader);
             return exchange.getResponse().setComplete();
         }
 
@@ -57,6 +62,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
                     .build();
 
         } catch (Exception e) {
+            System.out.println("❌ JWT Error: " + e.getMessage());
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
